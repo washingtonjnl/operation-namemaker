@@ -1,14 +1,18 @@
 import { useState } from "react";
+import { selectAnimal } from "../services/selectAnimal";
+import { selectColor } from "../services/selectColor";
 
 export default function Home() {
   const [operationName, setOperationName] = useState("Tap to generate");
   const [initialGeneration, setInitialGeneration] = useState(true);
+  const [color, setColor] = useState("");
 
   function generateOperationName() {
-    const color = "Blue";
-    const animal = "Horse";
+    const color = selectColor();
+    setColor(color.hex);
+    const animal = selectAnimal();
 
-    const newOperationName = `${color} ${animal}`;
+    const newOperationName = `${color.name} ${animal.name}`;
     setOperationName(newOperationName);
     setInitialGeneration(false);
   }
@@ -23,13 +27,12 @@ export default function Home() {
         <span className="text-indigo-700 font-medium">refresh button</span> to
         generate a new operation name
       </h2>
-      <div className="p-6 pl-8 gap-6 w-full max-w-xl bg-gray-50 rounded-lg flex align-center justify-between">
+      <div className="p-6 pl-8 gap-6 w-full max-w-xl bg-gray-50 rounded-lg flex items-center justify-between">
         <p
-          className={`grow m-auto  text-xl ${
-            initialGeneration
-              ? "italic text-gray-400"
-              : "font-semibold text-indigo-700"
+          className={`grow m-auto  text-xl text-gray-400 ${
+            initialGeneration ? "italic" : "font-semibold"
           }`}
+          style={{ color: !initialGeneration && color }}
         >
           {operationName}
         </p>
